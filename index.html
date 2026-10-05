@@ -1,452 +1,898 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultivating Nonlinear Thinking</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        stone: {
-                            50: '#fafaf9',
-                            100: '#f5f5f4',
-                            200: '#e7e5e4',
-                            800: '#292524',
-                            900: '#1c1917',
-                        },
-                        copper: {
-                            500: '#b45309',
-                            600: '#92400e',
-                        },
-                        sage: {
-                            100: '#e3e8e1',
-                            600: '#4b5548',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Nonlinear Thinking Guide</title>
+    <meta name="description" content="A practical, evidence-checked system for producing creative solutions in IT, AI, cybersecurity and hackathons.">
     <style>
-        body {
-            background-color: #fafaf9;
-            color: #292524;
+        :root {
+            --bg: #fafaf9;
+            --surface: #ffffff;
+            --surface-2: #f5f5f4;
+            --border: #e7e5e4;
+            --text: #292524;
+            --text-muted: #57534e;
+            --heading: #1c1917;
+            --accent: #92400e;
+            --accent-strong: #b45309;
+            --accent-soft: #fef3e2;
+            --sage: #4b5548;
+            --sage-soft: #e3e8e1;
+            --good: #3f6212;
+            --good-soft: #ecfccb;
+            --mid: #854d0e;
+            --mid-soft: #fef9c3;
+            --weak: #9f1239;
+            --weak-soft: #ffe4e6;
+            --shadow: 0 1px 2px rgba(28, 25, 23, 0.06);
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #171412;
+                --surface: #211d1a;
+                --surface-2: #2a2522;
+                --border: #3a3330;
+                --text: #e7e5e4;
+                --text-muted: #a8a29e;
+                --heading: #fafaf9;
+                --accent: #f59e0b;
+                --accent-strong: #fbbf24;
+                --accent-soft: #3a2a14;
+                --sage: #b7c4b2;
+                --sage-soft: #26302a;
+                --good: #bef264;
+                --good-soft: #263214;
+                --mid: #fde68a;
+                --mid-soft: #3a3214;
+                --weak: #fda4af;
+                --weak-soft: #3f1d24;
+                --shadow: none;
             }
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
+        :root[data-theme="dark"] {
+            --bg: #171412;
+            --surface: #211d1a;
+            --surface-2: #2a2522;
+            --border: #3a3330;
+            --text: #e7e5e4;
+            --text-muted: #a8a29e;
+            --heading: #fafaf9;
+            --accent: #f59e0b;
+            --accent-strong: #fbbf24;
+            --accent-soft: #3a2a14;
+            --sage: #b7c4b2;
+            --sage-soft: #26302a;
+            --good: #bef264;
+            --good-soft: #263214;
+            --mid: #fde68a;
+            --mid-soft: #3a3214;
+            --weak: #fda4af;
+            --weak-soft: #3f1d24;
+            --shadow: none;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: var(--accent); }
+        h1, h2, h3, h4 { color: var(--heading); line-height: 1.25; margin: 0 0 0.5em; }
+        h2 { font-size: 1.75rem; }
+        h3 { font-size: 1.15rem; }
+        p { margin: 0 0 1em; }
+        code, kbd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+        .muted { color: var(--text-muted); }
+        .small { font-size: 0.875rem; }
+
+        nav {
+            position: sticky; top: 0; z-index: 10;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid var(--border);
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+        .brand { font-weight: 700; color: var(--accent); text-decoration: none; white-space: nowrap; }
+        .navlinks { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+        .navlinks a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500;
+            padding: 6px 10px; border-radius: 999px; white-space: nowrap;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .navlinks a:hover { color: var(--accent); background: var(--surface-2); }
+        @media (max-width: 720px) { .navlinks { display: none; } }
+
+        header.hero { padding: 72px 0 40px; text-align: center; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.125rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 1em; }
+
+        main section { padding: 48px 0; border-top: 1px solid var(--border); scroll-margin-top: 64px; }
+        .lead { max-width: 720px; color: var(--text-muted); }
+        .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+
+        .card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 20px; box-shadow: var(--shadow);
         }
+        .grid { display: grid; gap: 16px; }
+        .g2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .g3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .g4 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+
+        .callout {
+            background: var(--accent-soft); border-left: 4px solid var(--accent-strong);
+            border-radius: 12px; padding: 16px 20px; margin: 24px 0;
+        }
+        .callout p:last-child { margin-bottom: 0; }
+
+        .formula {
+            font-size: clamp(1.05rem, 2.6vw, 1.4rem); font-weight: 700; text-align: center;
+            padding: 20px; margin: 24px 0; border-radius: 16px; background: var(--sage-soft); color: var(--sage);
+        }
+        .formula small { display: block; font-weight: 400; font-size: 0.875rem; color: var(--text-muted); margin-top: 6px; }
+
+        .factor .num { font-size: 0.8rem; font-weight: 700; color: var(--accent); }
+        .factor p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 16px; }
+        .tab, .btn {
+            border: 1px solid var(--border); background: var(--surface); color: var(--text);
+            padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+        }
+        .tab[aria-selected="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+        .btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+        .btn:hover { border-color: var(--accent); }
+        .btn:focus-visible, .tab:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: 2px solid var(--accent-strong); outline-offset: 2px;
+        }
+
+        ul.clean { list-style: none; padding: 0; margin: 0; }
+        ul.clean li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+        ul.clean li:last-child { border-bottom: 0; }
+        ul.clean strong { color: var(--heading); }
+
+        .steps { counter-reset: step; display: grid; gap: 12px; }
+        .step { position: relative; padding-left: 56px; }
+        .step::before {
+            counter-increment: step; content: counter(step);
+            position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 12px;
+            display: grid; place-items: center; font-weight: 800; background: var(--accent-soft); color: var(--accent);
+        }
+        .step h3 { margin-bottom: 2px; }
+        .step .time { font-size: 0.8rem; font-weight: 600; color: var(--sage); }
+        .step p { margin: 4px 0 0; color: var(--text-muted); }
+
+        .move h3 { font-size: 1rem; }
+        .move p { margin: 0 0 6px; font-size: 0.925rem; color: var(--text-muted); }
+        .move .ex { font-size: 0.85rem; color: var(--text); background: var(--surface-2); border-radius: 8px; padding: 8px 10px; margin: 0; }
+
+        .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.925rem; min-width: 640px; }
+        th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); background: var(--surface-2); }
+        tr:last-child td { border-bottom: 0; }
+        .pill { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+        .pill.good { background: var(--good-soft); color: var(--good); }
+        .pill.mid { background: var(--mid-soft); color: var(--mid); }
+        .pill.weak { background: var(--weak-soft); color: var(--weak); }
+
+        .gen { text-align: center; }
+        .gen-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; text-align: left; }
+        .slot { background: var(--surface-2); border-radius: 12px; padding: 14px; }
+        .slot .label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+        .slot .val { font-weight: 600; color: var(--heading); margin-top: 4px; }
+        .slot .hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+        .fade-in { animation: fadeIn 0.35s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } html { scroll-behavior: auto; } }
+
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin: 10px 0 4px; }
+        input[type="text"], textarea, select {
+            width: 100%; font: inherit; color: var(--text); background: var(--surface-2);
+            border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .timer { font-variant-numeric: tabular-nums; font-size: 2rem; font-weight: 800; color: var(--heading); }
+        .meter { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin: 8px 0 4px; }
+        .meter > div { height: 100%; width: 0; background: var(--accent-strong); transition: width 0.2s; }
+
+        .check { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .check:last-child { border-bottom: 0; }
+        .check input { margin-top: 5px; width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+        .check span { font-weight: 400; font-size: 0.95rem; }
+
+        .pattern { border-top: 1px solid var(--border); padding: 12px 0; }
+        .pattern:first-child { border-top: 0; }
+        .pattern h4 { margin: 0 0 4px; font-size: 1rem; }
+        .pattern .meta { font-size: 0.8rem; color: var(--text-muted); }
+        .pattern p { margin: 4px 0 0; font-size: 0.9rem; }
+        .pattern button { font-size: 0.75rem; padding: 2px 10px; margin-top: 6px; }
+
+        footer { border-top: 1px solid var(--border); padding: 40px 0; font-size: 0.85rem; color: var(--text-muted); }
+        footer ol { padding-left: 20px; }
+        footer li { margin-bottom: 4px; }
     </style>
 </head>
-<body class="antialiased font-sans leading-relaxed text-stone-800">
+<body>
 
-    <!-- Chosen Palette: Warm Neutrals (Stone) with Copper and Sage accents. -->
-    <!-- Application Structure Plan: A single-page vertical scroll structure acting as an interactive guide. It starts with the 'Why' (understanding nonlinear vs linear), moves to the 'How' (daily habits and environmental factors like music), and ends with an 'Action' section (an interactive tool to practice). This structure follows a logical learning progression: Concept -> Application -> Practice. -->
-    <!-- Visualization & Content Choices: 
-         1. Radar Chart (Chart.js): Goal: Compare Linear vs Nonlinear thinking traits. Justification: Shows multi-dimensional differences clearly. 
-         2. Bar/Line Chart (Chart.js): Goal: Illustrate the effect of ambient noise on creativity. Justification: Visually proves why certain environments (like coffee shops) boost nonlinear thought. 
-         3. Interactive Concept Mixer: Goal: Active practice. Justification: Forces the user to apply nonlinear thinking immediately rather than just reading about it. No SVG/Mermaid used. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<nav>
+    <div class="wrap">
+        <a class="brand" href="#top">&#9741; Albert's Nonlinear Thinking Guide</a>
+        <div class="navlinks">
+            <a href="#model">Model</a>
+            <a href="#library">What to read</a>
+            <a href="#moves">Moves</a>
+            <a href="#protocol">Protocol</a>
+            <a href="#evidence">Evidence</a>
+            <a href="#practice">Practice</a>
+            <a href="#plan">Plan</a>
+        </div>
+    </div>
+</nav>
 
-    <nav class="fixed top-0 w-full z-50 glass-panel shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 font-bold text-xl tracking-tight text-copper-600">
-                    &#9741; Albert's Nonlinear Thinking Guide
+<header class="hero" id="top">
+    <div class="wrap">
+        <h1>Nonlinear ideas are <span>linear knowledge, recombined.</span></h1>
+        <p>A practical system for producing creative solutions in IT, AI, cybersecurity and hackathons, checked against the research. It's built around doing the work, not reading about it.</p>
+    </div>
+</header>
+
+<main class="wrap">
+
+    <!-- 0. Why -->
+    <section id="why">
+        <div class="eyebrow">Start here</div>
+        <h2>Why "being more creative" usually doesn't stick</h2>
+        <p class="lead">Most creativity advice is about mood: change your route, play ambient music, think outside the box. It feels good, but the effects are small and don't carry over to technical work. In technical fields, the creative-looking solution almost always comes from someone who knows a lot of patterns and recognizes that one of them applies somewhere unexpected.</p>
+        <div class="callout">
+            <p><strong>The honest summary of the research:</strong> generic creativity training produces a modest effect (around 0.3 standard deviations once publication bias is corrected). The bigger and more reliable gains come from <em>domain knowledge you can recombine</em>, <em>practising on real problems before reading the answer</em>, <em>generating many ideas alone before judging them</em>, and <em>stepping away from a problem at the right moment</em>. This guide is built around those four.</p>
+        </div>
+    </section>
+
+    <!-- 1. Model -->
+    <section id="model">
+        <div class="eyebrow">1 &middot; The model</div>
+        <h2>What creative output actually depends on</h2>
+        <p class="lead">Think of it as a product, not a sum. If any one factor is near zero, the total stays low, no matter how strong the others are.</p>
+        <div class="formula">
+            Output &asymp; Library &times; Moves &times; Reps &times; Incubation
+            <small>then filtered through cheap tests</small>
+        </div>
+        <div class="grid g4">
+            <div class="card factor">
+                <div class="num">LIBRARY</div>
+                <h3>What you can recombine</h3>
+                <p>The tricks, attack primitives, architectures and failure modes you know, written down. You can't connect A to Q if you've never seen Q.</p>
+            </div>
+            <div class="card factor">
+                <div class="num">MOVES</div>
+                <h3>How you transform a problem</h3>
+                <p>A small set of deliberate operators (invert it, change the layer, break an assumption) that push you off the obvious path on purpose.</p>
+            </div>
+            <div class="card factor">
+                <div class="num">REPS</div>
+                <h3>How many attempts you make</h3>
+                <p>Volume of ideas and volume of problems. Your best ideas tend to show up late in a list, after the obvious ones are out of the way.</p>
+            </div>
+            <div class="card factor">
+                <div class="num">INCUBATION</div>
+                <h3>When you step away</h3>
+                <p>A planned break after real effort, filled with something easy (a walk, the dishes) or with sleep. Without the effort first, a break is just a break.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Library -->
+    <section id="library">
+        <div class="eyebrow">2 &middot; What to read</div>
+        <h2>The one category that matters most: worked solutions</h2>
+        <p class="lead">Read material that shows <strong>the reasoning path to a non-obvious solution</strong>: write-ups, disclosed reports, post-mortems, competition solutions. Spend roughly 80% of your reading here. The other 20% goes to other fields that are rich in <em>mechanisms</em>, which is where your analogies will come from.</p>
+
+        <div class="tabs" role="tablist" aria-label="Domain">
+            <button class="tab" role="tab" aria-selected="true" data-lib="cyber">Cybersec</button>
+            <button class="tab" role="tab" aria-selected="false" data-lib="ai">AI / ML</button>
+            <button class="tab" role="tab" aria-selected="false" data-lib="it">IT / Infra</button>
+            <button class="tab" role="tab" aria-selected="false" data-lib="hack">Hackathons</button>
+            <button class="tab" role="tab" aria-selected="false" data-lib="cross">Cross-domain (20%)</button>
+        </div>
+        <div class="card" id="libPanel" aria-live="polite"></div>
+
+        <h3 style="margin-top:32px">How to read so it actually turns into ideas</h3>
+        <div class="grid g3">
+            <div class="card">
+                <h3>1. Try it before you read it</h3>
+                <p class="muted small">Give the challenge, bug or competition 20&ndash;45 minutes on your own first, then read the write-up. Struggling with a problem before seeing the solution leads to deeper learning than reading first (the "productive failure" research).</p>
+            </div>
+            <div class="card">
+                <h3>2. Extract the primitive</h3>
+                <p class="muted small">Write one card per trick: <em>context &rarr; trick &rarr; why it worked &rarr; where else it could apply</em>. The last field matters most, because it's what makes a fact usable somewhere new. Use the pattern library below.</p>
+            </div>
+            <div class="card">
+                <h3>3. Compare two examples</h3>
+                <p class="muted small">People rarely transfer an idea from a single example. Once they compare two examples of the same principle, transfer becomes common (Gick &amp; Holyoak). So when you add a card, look for an older card with the same structure and link them.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Moves -->
+    <section id="moves">
+        <div class="eyebrow">3 &middot; Moves</div>
+        <h2>Twelve operators for getting off the obvious path</h2>
+        <p class="lead">These are deliberate transformations you apply to a problem when your first ideas dry up. Run three of them on every hard problem. They come from security research, TRIZ and design practice, and they work across all four domains.</p>
+        <div class="grid g3" id="movesGrid"></div>
+    </section>
+
+    <!-- 4. Protocol -->
+    <section id="protocol">
+        <div class="eyebrow">4 &middot; Protocol</div>
+        <h2>The 90-minute session: run this on any real problem</h2>
+        <p class="lead">The order matters: generate first, judge later, step away in the middle. Each step addresses a known failure, such as fixating on the first idea, judging ideas too early, or losing ideas in group discussion.</p>
+        <div class="grid g2" style="align-items:start">
+            <div class="card">
+                <div class="steps">
+                    <div class="step">
+                        <h3>Frame</h3><span class="time">5 min</span>
+                        <p>Write the problem in one sentence and define what "solved" looks like. Then list <strong>10 assumptions</strong>: what the system trusts, what's "impossible", what everyone does by default.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Diverge alone</h3><span class="time">10 min</span>
+                        <p>Aim for <strong>20 ideas</strong> and don't judge any of them yet. In a team, everyone writes alone first and you share afterwards (brainwriting). Groups that talk while generating come up with fewer ideas.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Push with moves</h3><span class="time">15 min</span>
+                        <p>Pick 3 moves (or roll them in the generator below) and apply each to the problem. Add at least 3 ideas per move.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Incubate</h3><span class="time">10&ndash;20 min (or one night)</span>
+                        <p>Go for a walk without your phone, or do the dishes. Keep it low-effort, because a demanding activity cancels the benefit. If the problem is really hard, sleep on it.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Converge</h3><span class="time">10 min</span>
+                        <p>Score each idea on impact, feasibility and surprise, from 1 to 3. Keep <strong>one safe and one bold</strong> idea.</p>
+                    </div>
+                    <div class="step">
+                        <h3>Cheap test, then log</h3><span class="time">rest</span>
+                        <p>Find the smallest experiment that could prove the bold idea wrong, and run it. Then add whatever you learned to your pattern library.</p>
+                    </div>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#understanding" class="text-stone-600 hover:text-copper-600 transition-colors px-3 py-2 text-sm font-medium">Understanding</a>
-                    <a href="#habits" class="text-stone-600 hover:text-copper-600 transition-colors px-3 py-2 text-sm font-medium">Daily Habits</a>
-                    <a href="#environment" class="text-stone-600 hover:text-copper-600 transition-colors px-3 py-2 text-sm font-medium">Environment & Music</a>
-                    <a href="#practice" class="bg-copper-600 text-white hover:bg-copper-500 transition-colors px-4 py-2 rounded-full text-sm font-medium">Practice Now</a>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>&#9873; CTF / bug hunting variant</h3>
+                    <ul class="clean small">
+                        <li><strong>Stuck for 45 minutes?</strong> Don't keep grinding the same path. Rewrite your assumption list from scratch.</li>
+                        <li><strong>Change the layer:</strong> encoding, parser, cache, auth flow, deployment, client-side code, timing.</li>
+                        <li><strong>Find a near-miss:</strong> search for write-ups of similar challenges and read only their first paragraph to get a hint.</li>
+                        <li><strong>Chain low-severity bugs.</strong> Two "informational" findings combined are often critical.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>&#9881; Hackathon variant (first 2 hours)</h3>
+                    <ul class="clean small">
+                        <li><strong>0:00&ndash;0:15</strong> Read the judging criteria and sponsor APIs. Those are your constraints.</li>
+                        <li><strong>0:15&ndash;0:30</strong> Everyone writes 10 ideas alone. Don't talk.</li>
+                        <li><strong>0:30&ndash;0:50</strong> Share the ideas, then apply "combine two" and "add a constraint" to the top 5.</li>
+                        <li><strong>0:50&ndash;1:10</strong> Take a walk as a team and agree on one demo moment worth remembering.</li>
+                        <li><strong>1:10&ndash;2:00</strong> Build the riskiest part first. If it doesn't work, switch to the safe idea.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>&#9670; AI / ML variant</h3>
+                    <ul class="clean small">
+                        <li><strong>Before touching the model,</strong> ask whether this is really a data problem, an evaluation problem, or a problem with how the task is framed.</li>
+                        <li><strong>Read 50 raw failures</strong> before you have any theory about them.</li>
+                        <li><strong>Make the 0.1&times; version:</strong> the same result with a smaller model, fewer labels or no training at all.</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <header class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight mb-6">
-            Breaking the Straight Line: <br>
-            <span class="text-copper-600">How to Improve Nonlinear Thinking</span>
-        </h1>
-        <p class="text-lg md:text-xl text-stone-600 mb-8 max-w-2xl mx-auto">
-            Linear thinking gets you from A to B. Nonlinear thinking connects A to Q to Z, finding creative solutions and hidden patterns. Learn the simple habits and environmental tweaks to rewire your creative brain.
-        </p>
-    </header>
+    <!-- 5. Evidence -->
+    <section id="evidence">
+        <div class="eyebrow">5 &middot; Evidence check</div>
+        <h2>What the research supports, and what it doesn't</h2>
+        <p class="lead">The previous version of this site included charts with illustrative numbers. Here the claims are graded against actual studies instead, so you know which levers are worth your time.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Intervention</th><th>Evidence</th><th>What we know</th><th>How to use it</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Generate ideas alone, then share</strong></td>
+                        <td><span class="pill good">Strong</span></td>
+                        <td>People working separately ("nominal groups") produce close to twice as many ideas as groups brainstorming out loud. Most of the loss comes from waiting your turn to speak. The finding has been replicated many times.</td>
+                        <td>Brainwriting in teams and hackathons.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compare &ge;2 examples of a principle</strong></td>
+                        <td><span class="pill good">Strong (lab)</span></td>
+                        <td>Transfer from a single example is rare. Comparing two examples produces an abstract schema, and that schema predicts whether people transfer the idea.</td>
+                        <td>Link pattern cards that share the same structure.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Attempt before instruction</strong></td>
+                        <td><span class="pill good">Moderate&ndash;strong</span></td>
+                        <td>A meta-analysis of 53 studies found that struggling with a problem first and getting instruction afterwards beats instruction-first for conceptual learning (STEM).</td>
+                        <td>Try the CTF or bug before reading the write-up.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Incubation breaks</strong></td>
+                        <td><span class="pill good">Moderate</span></td>
+                        <td>A meta-analysis of 117 studies found a reliable but small-to-medium effect (d &asymp; 0.29), larger for divergent tasks and after a longer stretch of preparation. An easy activity during the break works better than a hard one or none.</td>
+                        <td>Work hard first, then take a walk or do chores.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sleep</strong></td>
+                        <td><span class="pill good">Moderate</span></td>
+                        <td>After sleep, more than twice as many participants discovered a hidden shortcut in a task (59% vs. roughly 23% of those who stayed awake).</td>
+                        <td>Load the problem in the evening and look at it again in the morning.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Walking</strong></td>
+                        <td><span class="pill mid">Moderate</span></td>
+                        <td>People generated about 60% more alternative-use ideas while walking than while sitting, and the effect carried over briefly afterwards. It helped divergent thinking only, not convergent or insight tasks.</td>
+                        <td>Walk during the generating phase, then sit down to decide.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Moderate constraints</strong></td>
+                        <td><span class="pill mid">Moderate</span></td>
+                        <td>A cross-disciplinary review finds an inverted U: too few constraints leave you without direction, and too many cause fixation.</td>
+                        <td>Use "add a constraint" when you face a blank page.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generic creativity training</strong></td>
+                        <td><span class="pill mid">Modest</span></td>
+                        <td>About 0.5 standard deviations as published, but only about 0.3 after correcting for strong publication bias. Many of the studies have methodological weaknesses.</td>
+                        <td>Practise in your own domain rather than with abstract exercises.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coffee-shop noise (~70 dB)</strong></td>
+                        <td><span class="pill weak">Limited</span></td>
+                        <td>Comes from a single consumer-research paper with five experiments: 70 dB beat 50 dB and 85 dB on creative tasks. Treat it as interesting rather than settled.</td>
+                        <td>Use it if you like it, but don't count on it.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Changing your commute route</strong></td>
+                        <td><span class="pill weak">No direct evidence</span></td>
+                        <td>Novelty is pleasant, but no study links it to better technical problem-solving.</td>
+                        <td>Optional. It isn't a real lever.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-24">
+    <!-- 6. Practice -->
+    <section id="practice">
+        <div class="eyebrow">6 &middot; Practice</div>
+        <h2>Practice tools</h2>
+        <p class="lead">"Ocean &times; Clock" style prompts are fun, but they don't train the skill you need. These prompts use real problem types from your domains instead. Everything you enter is saved in this browser only.</p>
 
-        <section id="understanding" class="scroll-mt-24">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-stone-900 mb-4">1. Understanding the Two Modes</h2>
-                <p class="text-stone-600 max-w-3xl">
-                    This section breaks down the fundamental differences between linear and nonlinear thought. While linear thinking is excellent for execution and logic, nonlinear thinking is required for ideation and problem-solving in complex situations. The interactive chart below visualizes the strengths of each mindset.
-                </p>
+        <div class="grid g2" style="align-items:start">
+            <div class="card gen">
+                <h3>Problem &times; Move &times; Lens</h3>
+                <div class="row" style="justify-content:center">
+                    <label for="genDomain" style="margin:0">Domain</label>
+                    <select id="genDomain" style="width:auto">
+                        <option value="all">All</option>
+                        <option value="cyber">Cybersec</option>
+                        <option value="ai">AI / ML</option>
+                        <option value="it">IT / Infra</option>
+                        <option value="hack">Hackathon</option>
+                    </select>
+                </div>
+                <div class="gen-row" id="genOut">
+                    <div class="slot"><div class="label">Problem</div><div class="val" id="gProblem"></div></div>
+                    <div class="slot"><div class="label">Move</div><div class="val" id="gMove"></div><div class="hint" id="gMoveHint"></div></div>
+                    <div class="slot"><div class="label">Lens</div><div class="val" id="gLens"></div><div class="hint" id="gLensHint"></div></div>
+                </div>
+                <button class="btn primary" id="genBtn">Roll a new prompt</button>
+                <p class="muted small" style="margin-top:12px">Apply the move to the problem, then ask how the lens (another field) already solves something with the same structure. Write your ideas in the sprint box.</p>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-4 text-copper-600">&#10140; Linear Thinking</h3>
-                    <p class="text-stone-600 mb-6">Sequential, logical, and predictable. It relies on past data to predict future outcomes. Think of it like climbing a ladder—one step strictly follows another.</p>
-                    
-                    <h3 class="text-2xl font-semibold mb-4 text-sage-600">&#10040; Nonlinear Thinking</h3>
-                    <p class="text-stone-600">Lateral, abstract, and expansive. It draws connections between seemingly unrelated concepts. Think of it like a web—expanding in multiple directions simultaneously to catch new ideas.</p>
-                    
-                    <div class="mt-8 flex gap-4">
-                        <button id="btnLinear" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg hover:bg-stone-200 transition text-sm font-medium">Highlight Linear</button>
-                        <button id="btnNonlinear" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg hover:bg-stone-200 transition text-sm font-medium">Highlight Nonlinear</button>
-                        <button id="btnBoth" class="px-4 py-2 bg-copper-50 text-copper-700 rounded-lg hover:bg-copper-100 transition text-sm font-medium">Compare Both</button>
+            <div class="card">
+                <h3>10-minute idea sprint</h3>
+                <p class="muted small">Write one idea per line. The goal is 20, and the strange ones count too.</p>
+                <div class="row" style="justify-content:space-between">
+                    <div class="timer" id="timer">10:00</div>
+                    <div class="row">
+                        <button class="btn primary" id="timerStart">Start</button>
+                        <button class="btn" id="timerReset">Reset</button>
                     </div>
                 </div>
-                
-                <div class="bg-stone-50 rounded-xl p-4 border border-stone-100">
-                    <div class="chart-container">
-                        <canvas id="mindsetChart"></canvas>
+                <div class="meter" aria-hidden="true"><div id="ideaMeter"></div></div>
+                <div class="small muted" id="ideaCount">0 / 20 ideas</div>
+                <label for="ideas" class="sr-only" style="position:absolute;left:-9999px">Ideas</label>
+                <textarea id="ideas" rows="9" placeholder="1. ...&#10;2. ...&#10;3. ..."></textarea>
+            </div>
+        </div>
+
+        <div class="grid g2" style="align-items:start; margin-top:16px">
+            <div class="card">
+                <h3>Pattern library: add a card</h3>
+                <p class="muted small">Add a card for every write-up, post-mortem or solution you study. This becomes your personal store of things to recombine.</p>
+                <form id="patternForm">
+                    <label for="pName">Trick (short name)</label>
+                    <input type="text" id="pName" required placeholder="e.g. Parser differential between proxy and backend">
+                    <label for="pDomain">Domain</label>
+                    <select id="pDomain">
+                        <option>Cybersec</option><option>AI / ML</option><option>IT / Infra</option><option>Hackathon</option><option>Other</option>
+                    </select>
+                    <label for="pContext">Context &rarr; why it worked</label>
+                    <textarea id="pContext" rows="3" placeholder="Where you saw it, and what assumption it broke"></textarea>
+                    <label for="pElse">Where else could this apply?</label>
+                    <textarea id="pElse" rows="2" placeholder="Name at least one other domain or system. This is the field that matters most."></textarea>
+                    <label for="pSource">Source (link)</label>
+                    <input type="text" id="pSource" placeholder="https://...">
+                    <div class="row" style="margin-top:12px">
+                        <button class="btn primary" type="submit">Save card</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card">
+                <div class="row" style="justify-content:space-between">
+                    <h3 style="margin:0">Your cards <span class="muted small" id="pCount"></span></h3>
+                    <div class="row">
+                        <button class="btn" id="pRandom">Random pair</button>
+                        <button class="btn" id="pExport">Export .md</button>
                     </div>
                 </div>
+                <p class="muted small" style="margin-top:8px">"Random pair" picks two of your cards. Ask yourself what structure they share, or what they would produce if combined.</p>
+                <div id="pPair"></div>
+                <div id="pList"><p class="muted small">No cards yet. Add your first one from the next write-up you read.</p></div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="habits" class="scroll-mt-24">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-stone-900 mb-4">2. Daily Habits for a Lateral Mind</h2>
-                <p class="text-stone-600 max-w-3xl">
-                    Nonlinear thinking isn't a genetic gift; it's a muscle. By introducing small, calculated disruptions into your daily routine, you force your brain off autopilot and encourage it to build new neural pathways. Here are actionable habits you can start today.
-                </p>
+    <!-- 7. Plan -->
+    <section id="plan">
+        <div class="eyebrow">7 &middot; Plan</div>
+        <h2>A weekly routine (about 4 hours)</h2>
+        <p class="lead">The aim is a routine that still works in a busy week, not motivation. Tick items off as you go; the checklist resets every Monday.</p>
+        <div class="grid g2" style="align-items:start">
+            <div class="card">
+                <h3>This week <span class="muted small" id="weekLabel"></span></h3>
+                <div id="weekly"></div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform">&#128694;</div>
-                    <h3 class="text-xl font-bold text-stone-900 mb-2">Change the Route</h3>
-                    <p class="text-stone-600 text-sm">Stop taking the same way to work or the store. Taking a new physical path forces your brain to process new spatial information, breaking cognitive rigidness.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform">&#128218;</div>
-                    <h3 class="text-xl font-bold text-stone-900 mb-2">Cross-Pollinate Input</h3>
-                    <p class="text-stone-600 text-sm">If you are a programmer, read about biology. If you are an artist, study economics. The best nonlinear ideas come from applying the rules of one discipline to another.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform">&#9200;</div>
-                    <h3 class="text-xl font-bold text-stone-900 mb-2">Embrace the "Pause"</h3>
-                    <p class="text-stone-600 text-sm">When faced with a problem, don't rush the first logical answer. Force a 10-minute delay. Do a mundane task (like washing dishes) to let your subconscious connect dots.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="environment" class="scroll-mt-24">
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-stone-900 mb-4">3. Music & The Ambient Environment</h2>
-                <p class="text-stone-600 max-w-3xl">
-                    Your physical environment and auditory inputs drastically affect how your brain operates. This section visualizes research on how different noise levels and music types impact your ability to think creatively versus analytically.
-                </p>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-5">
-                    <div class="lg:col-span-2 bg-sage-100 p-8 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold text-sage-600 mb-4">The 70 Decibel Sweet Spot</h3>
-                        <p class="text-stone-700 mb-6">
-                            Studies show that absolute silence sharpens focus for linear, detail-oriented tasks. However, a moderate level of ambient noise (around 70dB, akin to a bustling coffee shop) creates just enough "distraction" to prevent you from fixating on one rigid approach, promoting broader, nonlinear associations.
-                        </p>
-                        <div class="space-y-4">
-                            <div class="bg-white/60 p-3 rounded-lg">
-                                <strong class="block text-sm text-stone-900">&#127911; Video Game Soundtracks</strong>
-                                <span class="text-xs text-stone-600">Designed to keep you engaged without distracting you with lyrics. Great for flow states.</span>
-                            </div>
-                            <div class="bg-white/60 p-3 rounded-lg">
-                                <strong class="block text-sm text-stone-900">&#127783; White/Brown Noise</strong>
-                                <span class="text-xs text-stone-600">Masks jarring environmental sounds, allowing the subconscious mind to wander safely.</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-3 p-8">
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="font-semibold text-stone-800">Impact of Audio on Cognitive Tasks</h4>
-                            <select id="audioChartSelector" class="bg-stone-50 border border-stone-200 text-sm rounded-lg px-3 py-1 outline-none focus:border-copper-500">
-                                <option value="creativity">Creative (Nonlinear)</option>
-                                <option value="focus">Analytical (Linear)</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="audioChart"></canvas>
-                        </div>
-                    </div>
+            <div class="card">
+                <h3>First 4 weeks</h3>
+                <ul class="clean small">
+                    <li><strong>Week 1, setup.</strong> Pick one main domain. Bookmark 3 sources from the "What to read" tab. Add 5 cards to your pattern library.</li>
+                    <li><strong>Week 2, attempt-first.</strong> Do 3 problems (CTF challenges, Kaggle kernels, incident write-ups) before reading their solutions. Write 3 more cards and link at least one pair.</li>
+                    <li><strong>Week 3, real problem.</strong> Run the full 90-minute protocol on something at work, school or in a side project, and run the cheap test.</li>
+                    <li><strong>Week 4, compete.</strong> Enter one event: a weekend CTF on CTFtime, a Kaggle playground, or a hackathon on Devpost or MLH. Write your own short write-up afterwards.</li>
+                    <li><strong>Then:</strong> keep the weekly routine. Every month, read through all your cards and roll "random pair" five times.</li>
+                </ul>
+                <div class="callout small" style="margin-bottom:0">
+                    <p><strong>Writing your own write-ups</strong> is the step most people skip. Explaining <em>why</em> your solution worked turns a one-off win into a reusable pattern, and it also builds a public portfolio.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="practice" class="scroll-mt-24">
-            <div class="mb-8 text-center max-w-3xl mx-auto">
-                <h2 class="text-3xl font-bold text-stone-900 mb-4">4. Practice: Forced Connections</h2>
-                <p class="text-stone-600">
-                    The core of nonlinear thinking is finding relationships between completely unrelated things. Use the tool below to generate two random concepts. Your task: find a way they are connected, or how one could improve the other.
-                </p>
-            </div>
+</main>
 
-            <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-lg border border-copper-100 text-center relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-2 bg-copper-500"></div>
-                
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mb-8 mt-4">
-                    <div id="wordOne" class="text-2xl md:text-3xl font-bold text-stone-800 bg-stone-100 px-6 py-4 rounded-xl w-48 shadow-inner">
-                        Ocean
-                    </div>
-                    <div class="text-copper-500 font-bold text-xl">&#10006;</div>
-                    <div id="wordTwo" class="text-2xl md:text-3xl font-bold text-stone-800 bg-stone-100 px-6 py-4 rounded-xl w-48 shadow-inner">
-                        Clock
-                    </div>
-                </div>
+<footer>
+    <div class="wrap">
+        <h3>Sources</h3>
+        <ol>
+            <li>Diehl, M. &amp; Stroebe, W. (1987). Productivity loss in brainstorming groups. <em>J. Personality &amp; Social Psychology</em>. <a href="https://en.wikipedia.org/wiki/Production_blocking">Overview</a></li>
+            <li>Gick, M. L. &amp; Holyoak, K. J. (1983). Schema induction and analogical transfer. <em>Cognitive Psychology</em> 15(1). <a href="https://deepblue.lib.umich.edu/items/196ea13e-fb69-4a74-a6f9-864c81aed465">Link</a></li>
+            <li>Sinha, T. &amp; Kapur, M. (2021). When problem solving followed by instruction works: evidence for productive failure. <em>Review of Educational Research</em>. <a href="https://www.weforum.org/stories/2021/09/students-who-productively-fail-learn-more/">Summary</a></li>
+            <li>Sio, U. N. &amp; Ormerod, T. C. (2009). Does incubation enhance problem solving? A meta-analytic review. <em>Psychological Bulletin</em>. <a href="https://pubmed.ncbi.nlm.nih.gov/19210055/">PubMed</a></li>
+            <li>Wagner, U. et al. (2004). Sleep inspires insight. <em>Nature</em> 427. <a href="https://walkerlab.berkeley.edu/reprints/Stickgold%20&amp;%20Walker%20TICS_2004.pdf">Discussion</a></li>
+            <li>Oppezzo, M. &amp; Schwartz, D. (2014). Give your ideas some legs. <em>J. Exp. Psych.: Learning, Memory &amp; Cognition</em>. <a href="https://news.stanford.edu/stories/2014/04/walking-vs-sitting-042414">Stanford summary</a></li>
+            <li>Acar, O. A., Tarakci, M. &amp; van Knippenberg, D. (2019). Creativity and innovation under constraints. <em>Journal of Management</em>. <a href="https://openaccess.city.ac.uk/id/eprint/20459/">Link</a></li>
+            <li>The impact of creativity training on creative performance: a meta-analytic review of 5 decades (2024). <em>Psychological Bulletin</em> 150(5). <a href="https://eprints.whiterose.ac.uk/id/eprint/209749/">Link</a></li>
+            <li>Mehta, R., Zhu, R. &amp; Cheema, A. (2012). Is noise always bad? <em>Journal of Consumer Research</em> 39(4). <a href="https://academic.oup.com/jcr/article/39/4/784/1795620">Link</a></li>
+        </ol>
+        <p style="margin-top:24px">&copy; 2026 Albert's Nonlinear Thinking Guide.</p>
+    </div>
+</footer>
 
-                <div id="promptText" class="text-stone-500 italic mb-8 h-12 flex items-center justify-center">
-                    "How could the concept of an Ocean influence the design of a Clock?"
-                </div>
+<script>
+(function () {
+    'use strict';
 
-                <button id="generateBtn" class="bg-copper-600 hover:bg-copper-700 text-white font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-                    Generate New Pair
-                </button>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-stone-900 text-stone-400 py-12 text-center text-sm">
-        <p>&copy; 2026 MindShift Guide. Designed for Cognitive Agility.</p>
-    </footer>
-
-    <script>
-        const chartColors = {
-            linear: 'rgba(148, 163, 184, 0.6)', 
-            linearBorder: 'rgba(71, 85, 105, 1)',
-            nonlinear: 'rgba(180, 83, 9, 0.4)', 
-            nonlinearBorder: 'rgba(180, 83, 9, 1)',
-            sageGrid: 'rgba(227, 232, 225, 0.5)'
-        };
-
-        const ctxMindset = document.getElementById('mindsetChart').getContext('2d');
-        const mindsetData = {
-            labels: ['Predictability', 'Speed of Execution', 'Idea Generation', 'Adaptability', 'Detail Focus', 'Pattern Recognition'],
-            datasets: [
-                {
-                    label: 'Linear Thinking',
-                    data: [90, 85, 30, 40, 95, 40],
-                    backgroundColor: chartColors.linear,
-                    borderColor: chartColors.linearBorder,
-                    pointBackgroundColor: chartColors.linearBorder,
-                    borderWidth: 2,
-                },
-                {
-                    label: 'Nonlinear Thinking',
-                    data: [30, 40, 95, 90, 40, 90],
-                    backgroundColor: chartColors.nonlinear,
-                    borderColor: chartColors.nonlinearBorder,
-                    pointBackgroundColor: chartColors.nonlinearBorder,
-                    borderWidth: 2,
-                }
-            ]
-        };
-
-        const mindsetChart = new Chart(ctxMindset, {
-            type: 'radar',
-            data: mindsetData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: { color: chartColors.sageGrid },
-                        grid: { color: chartColors.sageGrid },
-                        pointLabels: {
-                            font: { family: 'Inter', size: 12, weight: '500' },
-                            color: '#4b5548'
-                        },
-                        ticks: { display: false, min: 0, max: 100 }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { font: { family: 'Inter' }, usePointStyle: true }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(41, 37, 36, 0.9)',
-                        titleFont: { family: 'Inter' },
-                        bodyFont: { family: 'Inter' },
-                        padding: 10,
-                        cornerRadius: 4
-                    }
-                }
-            }
-        });
-
-        document.getElementById('btnLinear').addEventListener('click', () => {
-            mindsetChart.data.datasets[0].hidden = false;
-            mindsetChart.data.datasets[1].hidden = true;
-            mindsetChart.update();
-        });
-        document.getElementById('btnNonlinear').addEventListener('click', () => {
-            mindsetChart.data.datasets[0].hidden = true;
-            mindsetChart.data.datasets[1].hidden = false;
-            mindsetChart.update();
-        });
-        document.getElementById('btnBoth').addEventListener('click', () => {
-            mindsetChart.data.datasets[0].hidden = false;
-            mindsetChart.data.datasets[1].hidden = false;
-            mindsetChart.update();
-        });
-
-        const ctxAudio = document.getElementById('audioChart').getContext('2d');
-        const audioDataStates = {
-            creativity: [30, 50, 90, 60, 20], 
-            focus: [95, 80, 50, 30, 10] 
-        };
-
-        const audioChart = new Chart(ctxAudio, {
-            type: 'bar',
-            data: {
-                labels: ['Absolute Silence (0dB)', 'Library (40dB)', 'Coffee Shop (70dB)', 'City Traffic (85dB)', 'Concert (100+dB)'],
-                datasets: [{
-                    label: 'Performance Score',
-                    data: audioDataStates.creativity,
-                    backgroundColor: [
-                        '#e7e5e4',
-                        '#d6d3d1',
-                        '#b45309', 
-                        '#a8a29e',
-                        '#78716c'
-                    ],
-                    borderRadius: 6,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        grid: { color: chartColors.sageGrid, drawBorder: false },
-                        ticks: { font: { family: 'Inter' }, color: '#78716c' }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: {
-                            font: { family: 'Inter', size: 11 },
-                            color: '#78716c',
-                            maxRotation: 45,
-                            minRotation: 0
-                        }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(41, 37, 36, 0.9)',
-                        titleFont: { family: 'Inter' },
-                        bodyFont: { family: 'Inter' },
-                        callbacks: {
-                            label: function(context) {
-                                return ` Effectiveness: ${context.parsed.y}%`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        document.getElementById('audioChartSelector').addEventListener('change', (e) => {
-            const selected = e.target.value;
-            audioChart.data.datasets[0].data = audioDataStates[selected];
-            
-            if(selected === 'focus') {
-                audioChart.data.datasets[0].backgroundColor = ['#b45309', '#d6d3d1', '#e7e5e4', '#a8a29e', '#78716c'];
-            } else {
-                audioChart.data.datasets[0].backgroundColor = ['#e7e5e4', '#d6d3d1', '#b45309', '#a8a29e', '#78716c'];
-            }
-            audioChart.update();
-        });
-
-        const conceptBank = [
-            'Architecture', 'Biology', 'Jazz Music', 'Economics', 
-            'A Forest', 'A Smartphone', 'Cooking', 'Astronomy',
-            'A Bicycle', 'Chess', 'Gardening', 'Water', 
-            'A Spiderweb', 'A City Grid', 'Photography', 'Language'
-        ];
-
-        const w1El = document.getElementById('wordOne');
-        const w2El = document.getElementById('wordTwo');
-        const promptEl = document.getElementById('promptText');
-        const genBtn = document.getElementById('generateBtn');
-
-        function getRandomConcepts() {
-            let idx1 = Math.floor(Math.random() * conceptBank.length);
-            let idx2 = Math.floor(Math.random() * conceptBank.length);
-            while(idx1 === idx2) {
-                idx2 = Math.floor(Math.random() * conceptBank.length);
-            }
-            return [conceptBank[idx1], conceptBank[idx2]];
+    // ---------- Safe storage ----------
+    const store = {
+        get(key, fallback) {
+            try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+            catch (e) { return fallback; }
+        },
+        set(key, value) {
+            try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage unavailable */ }
         }
+    };
 
-        genBtn.addEventListener('click', () => {
-            w1El.classList.remove('fade-in');
-            w2El.classList.remove('fade-in');
-            promptEl.classList.remove('fade-in');
-            
-            void w1El.offsetWidth; 
-            
-            const [word1, word2] = getRandomConcepts();
-            
-            w1El.textContent = word1;
-            w2El.textContent = word2;
-            
-            const prompts = [
-                `How could the principles of [W1] solve a problem in [W2]?`,
-                `If you merged [W1] and [W2], what new product would you create?`,
-                `Describe [W1] using only the vocabulary of [W2].`,
-                `What hidden similarity exists between [W1] and [W2]?`
-            ];
-            
-            let selectedPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-            selectedPrompt = selectedPrompt.replace('[W1]', `<span class="font-semibold"> ${word1} </span>`).replace('[W2]', `<span class="font-semibold"> ${word2} </span>`);
-            
-            promptEl.innerHTML = `"${selectedPrompt}"`;
-            
-            w1El.classList.add('fade-in');
-            w2El.classList.add('fade-in');
-            promptEl.classList.add('fade-in');
+    function el(tag, attrs, children) {
+        const node = document.createElement(tag);
+        if (attrs) for (const k in attrs) {
+            if (k === 'text') node.textContent = attrs[k];
+            else if (k === 'html') node.innerHTML = attrs[k];
+            else node.setAttribute(k, attrs[k]);
+        }
+        (children || []).forEach(c => node.appendChild(c));
+        return node;
+    }
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+    // ---------- Library tabs ----------
+    const library = {
+        cyber: {
+            intro: 'Security creativity mostly means noticing an assumption someone else didn\'t check. These sources show the exact moment a researcher noticed one.',
+            items: [
+                ['CTF write-ups', 'CTFtime.org write-ups for past events. Pick challenges in your weakest category, attempt them first, then read.', 'https://ctftime.org/writeups'],
+                ['Disclosed bug bounty reports', 'HackerOne Hacktivity. Filter for disclosed, high-severity reports and pay attention to bug chains.', 'https://hackerone.com/hacktivity'],
+                ['PortSwigger Research', 'Novel web attack classes (request smuggling, cache poisoning) explained from the original idea through to the exploit.', 'https://portswigger.net/research'],
+                ['Google Project Zero blog', 'Deep vulnerability research. Watch how they question each layer of the system.', 'https://googleprojectzero.blogspot.com/'],
+                ['Conference talks (DEF CON, Black Hat, OffensiveCon)', 'Look especially for talks that open up a new attack surface, not ones about a single bug.', 'https://www.youtube.com/@DEFCONConference'],
+                ['Schneier, "The Security Mindset"', 'A short essay on how to see the world the way an attacker does. Worth rereading.', 'https://www.schneier.com/blog/archives/2008/03/the_security_mi_1.html']
+            ]
+        },
+        ai: {
+            intro: 'In AI, the creative step is usually in the data, the evaluation or the problem framing, not the architecture. Winning solutions and ablation sections show where.',
+            items: [
+                ['Kaggle winning-solution write-ups', 'Look in the Discussion tab of finished competitions. Top teams explain which unusual trick made the difference.', 'https://www.kaggle.com/competitions'],
+                ['ARC Prize technical reports', 'Very different approaches to the same hard reasoning benchmark. Compare them side by side.', 'https://arcprize.org/'],
+                ['Paper ablation and "what didn\'t work" sections', 'Skip the abstract and go straight to the ablations, which show which idea actually carried the result.', 'https://paperswithcode.com/'],
+                ['LLM security and prompt-injection research', 'Where AI and security meet, and a rich source of "the feature is the bug" thinking.', 'https://simonwillison.net/tags/prompt-injection/'],
+                ['Practitioner blogs (Karpathy, Lilian Weng, Eugene Yan)', 'Explain how problems are framed, how evals are built and what fails in real systems.', 'https://lilianweng.github.io/']
+            ]
+        },
+        it: {
+            intro: 'Post-mortems are write-ups of real systems failing in ways nobody predicted. They are the best place to learn how the assumptions in production systems break.',
+            items: [
+                ['Collected public post-mortems', 'A curated list of incident write-ups across many companies. Read one a week.', 'https://github.com/danluu/post-mortems'],
+                ['Cloudflare blog (incident and engineering posts)', 'Unusually detailed analysis of root causes.', 'https://blog.cloudflare.com/'],
+                ['AWS post-event summaries', 'Shows how failures spread across a large system.', 'https://aws.amazon.com/premiumsupport/technology/pes/'],
+                ['Company engineering blogs ("how we scaled X")', 'Look for the part where the obvious approach failed and what they did instead.', 'https://github.com/kilimchoi/engineering-blogs'],
+                ['Google SRE books (free online)', 'A shared vocabulary for reliability, and a useful source of mechanisms.', 'https://sre.google/books/']
+            ]
+        },
+        hack: {
+            intro: 'Hackathon wins come from a clear problem, one strong demo moment and a stack that fits the time. Read the winners\' write-ups, not just their pitches.',
+            items: [
+                ['Devpost winner galleries', 'Read the "Inspiration", "Challenges" and "What we learned" sections of winning projects.', 'https://devpost.com/software'],
+                ['MLH events', 'Lots of weekend events, often remote. Repetition matters more than any single win.', 'https://mlh.io/'],
+                ['Judging criteria and sponsor docs', 'Before every event, read them as a list of constraints.', null],
+                ['Your own post-hackathon write-up', 'Within 48 hours: what you built, what you would change, and which trick to keep.', null]
+            ]
+        },
+        cross: {
+            intro: 'Use the remaining 20% of your reading for fields with mechanisms you can borrow. Read for structure ("how does this system defend, allocate or adapt?") rather than for trivia.',
+            items: [
+                ['Immunology', 'Self vs. non-self detection, layered defence, memory. Maps directly onto intrusion detection and anomaly detection.', null],
+                ['Economics and game theory', 'Incentives, mechanism design, auctions. Useful for abuse prevention, rate limiting and multi-agent systems.', null],
+                ['Evolution and ecology', 'Variation plus selection, niches, arms races. Relevant to fuzzing, search, and how attackers and defenders co-evolve.', null],
+                ['Magic and misdirection', 'How attention is steered. This is the logic behind social engineering and UI deception.', null],
+                ['Speedrunning and glitch hunting', 'Players who break games are doing exploit research. Search for "TAS any% explained".', null],
+                ['TRIZ (40 inventive principles)', 'A catalogue of how engineers resolved contradictions, distilled from patents. A ready-made set of moves.', 'https://en.wikipedia.org/wiki/TRIZ'],
+                ['History of hacks (phone phreaking, early worms)', 'Classic examples of in-band control signals, which are the same structure as injection bugs.', null]
+            ]
+        }
+    };
+
+    const libPanel = document.getElementById('libPanel');
+    function renderLib(key) {
+        const d = library[key];
+        libPanel.innerHTML = '';
+        libPanel.appendChild(el('p', { class: 'muted', text: d.intro }));
+        const ul = el('ul', { class: 'clean' });
+        d.items.forEach(([name, desc, url]) => {
+            const li = el('li');
+            const title = url ? el('a', { href: url, target: '_blank', rel: 'noopener', text: name }) : el('strong', { text: name });
+            li.appendChild(title);
+            li.appendChild(el('div', { class: 'small muted', text: desc }));
+            ul.appendChild(li);
         });
+        libPanel.appendChild(ul);
+        libPanel.classList.remove('fade-in'); void libPanel.offsetWidth; libPanel.classList.add('fade-in');
+    }
+    document.querySelectorAll('[data-lib]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-lib]').forEach(b => b.setAttribute('aria-selected', 'false'));
+            btn.setAttribute('aria-selected', 'true');
+            renderLib(btn.dataset.lib);
+        });
+    });
+    renderLib('cyber');
 
-    </script>
+    // ---------- Moves ----------
+    const moves = [
+        ['Break an assumption', 'List what the system trusts or treats as impossible, then challenge each item one at a time.', 'Two components in a pipeline are assumed to interpret the same input identically. When they don\'t, the gap between them becomes the opening.'],
+        ['Change the layer', 'If one layer is well-defended, move up or down: encoding, protocol, cache, build pipeline, hardware, or the people around it.', 'The algorithm is sound, so attention moves to how keys are stored, how long operations take, or how the deployment process handles secrets.'],
+        ['The feature is the bug', 'Ask what an intended, documented feature lets someone do that the designer never pictured.', 'An assistant that reads untrusted text can be steered by instructions hidden inside that text. The capability itself is the exposure.'],
+        ['Invert it', 'Solve the opposite problem, or flip who is in control, and see what that reveals.', 'Instead of "how do I detect this?", ask "if I wanted this to go unnoticed, what would I rely on?" and defend that.'],
+        ['Combine two', 'Take two small, individually unremarkable findings and chain them into one that matters.', 'An information leak plus a weak default, combined, add up to something far more serious than either alone.'],
+        ['Add a constraint', 'Impose an artificial limit: no servers, 100 lines, read-only, ten-minute demo. Constraints focus a blank page.', 'Forcing "no database" pushes you toward an append-only log, which turns out to be simpler and auditable.'],
+        ['Remove a constraint', 'Ask what you\'d do with infinite budget, time or privilege, then approximate it cheaply.', '"If latency were free I\'d recompute everything" becomes a background job plus a cache.'],
+        ['Change the scale', 'Shrink it to one user or one packet, or blow it up to a billion. New behaviour appears at the extremes.', 'A design that\'s fine for one tenant breaks at ten thousand, and the breakage points straight at the bottleneck.'],
+        ['Steal from another field', 'Name a field that already solved something with this structure and port its mechanism across.', 'Biological immune systems separate self from non-self, which maps onto anomaly detection.'],
+        ['Work backward from the goal', 'Start at the finished state and ask what must be true one step before, repeatedly.', 'Begin at "the demo wows the judges", then derive the single feature that has to work.'],
+        ['Make it concrete', 'Replace the abstract problem with one specific, vivid instance and solve that first.', 'Instead of "handle all inputs", solve one real captured example end to end, then generalise.'],
+        ['Question the question', 'Ask whether you\'re solving the right problem at all. The best move is sometimes to reframe it.', '"Make the model more accurate" may really be "the evaluation doesn\'t measure what we care about".']
+    ];
+    const movesGrid = document.getElementById('movesGrid');
+    moves.forEach(([title, desc, ex]) => {
+        movesGrid.appendChild(el('div', { class: 'card move' }, [
+            el('h3', { text: title }),
+            el('p', { text: desc }),
+            el('p', { class: 'ex', html: '<strong>e.g.</strong> ' + ex })
+        ]));
+    });
+
+    // ---------- Prompt generator ----------
+    const problems = {
+        cyber: ['Harden an authentication flow against abuse', 'Find a logic flaw in a multi-step checkout', 'Detect a slow data exfiltration channel', 'Design a secure update mechanism for IoT devices', 'Review an OAuth integration for misuse'],
+        ai: ['Reduce hallucinations in a retrieval system', 'Build an eval for a task with no clear ground truth', 'Cut inference cost by 10x without losing quality', 'Detect data leakage between train and test', 'Make a small model beat a big one on one narrow task'],
+        it: ['Diagnose intermittent latency spikes', 'Design a zero-downtime migration', 'Make a flaky deploy pipeline reliable', 'Cut cloud spend by 40% without hurting reliability', 'Recover gracefully from a region outage'],
+        hack: ['Build something delightful with one sponsor API', 'Solve a campus problem in 24 hours', 'Make an AI tool that works offline', 'Turn boring open data into something people want', 'Build an accessibility tool with one strong demo']
+    };
+    const lenses = [
+        ['Immunology', 'self vs. non-self, layered defence, memory of past threats'],
+        ['Economics', 'incentives, pricing, scarcity, mechanism design'],
+        ['Ecology', 'niches, feedback loops, predator and prey'],
+        ['Logistics', 'queues, buffers, routing, just-in-time'],
+        ['Music', 'rhythm, layering, call and response, improvisation'],
+        ['Game design', 'rules, feedback, difficulty curves, exploits'],
+        ['Architecture', 'load-bearing structure, flow, public vs. private space'],
+        ['Medicine', 'diagnosis, triage, treating cause vs. symptom']
+    ];
+    const gProblem = document.getElementById('gProblem'), gMove = document.getElementById('gMove'),
+          gMoveHint = document.getElementById('gMoveHint'), gLens = document.getElementById('gLens'),
+          gLensHint = document.getElementById('gLensHint'), genOut = document.getElementById('genOut');
+    function roll() {
+        const dom = document.getElementById('genDomain').value;
+        const pool = dom === 'all' ? Object.values(problems).flat() : problems[dom];
+        const mv = pick(moves);
+        const ln = pick(lenses);
+        gProblem.textContent = pick(pool);
+        gMove.textContent = mv[0]; gMoveHint.textContent = mv[1];
+        gLens.textContent = ln[0]; gLensHint.textContent = ln[1];
+        genOut.classList.remove('fade-in'); void genOut.offsetWidth; genOut.classList.add('fade-in');
+    }
+    document.getElementById('genBtn').addEventListener('click', roll);
+    document.getElementById('genDomain').addEventListener('change', roll);
+    roll();
+
+    // ---------- Idea sprint ----------
+    const ideasEl = document.getElementById('ideas'), ideaCount = document.getElementById('ideaCount'),
+          ideaMeter = document.getElementById('ideaMeter'), timerEl = document.getElementById('timer');
+    ideasEl.value = store.get('nlt_ideas', '');
+    function countIdeas() {
+        const n = ideasEl.value.split('\n').filter(l => l.trim().length > 1).length;
+        ideaCount.textContent = n + ' / 20 ideas';
+        ideaMeter.style.width = Math.min(100, n / 20 * 100) + '%';
+    }
+    ideasEl.addEventListener('input', () => { store.set('nlt_ideas', ideasEl.value); countIdeas(); });
+    countIdeas();
+
+    let remaining = 600, tick = null;
+    function paint() {
+        const m = Math.floor(remaining / 60), s = remaining % 60;
+        timerEl.textContent = m + ':' + String(s).padStart(2, '0');
+    }
+    document.getElementById('timerStart').addEventListener('click', function () {
+        if (tick) { clearInterval(tick); tick = null; this.textContent = 'Start'; return; }
+        this.textContent = 'Pause';
+        tick = setInterval(() => {
+            remaining--; paint();
+            if (remaining <= 0) { clearInterval(tick); tick = null; document.getElementById('timerStart').textContent = 'Start'; remaining = 0; }
+        }, 1000);
+    });
+    document.getElementById('timerReset').addEventListener('click', () => {
+        if (tick) { clearInterval(tick); tick = null; }
+        document.getElementById('timerStart').textContent = 'Start';
+        remaining = 600; paint();
+    });
+    paint();
+
+    // ---------- Pattern library ----------
+    let cards = store.get('nlt_cards', []);
+    const pList = document.getElementById('pList'), pCount = document.getElementById('pCount'), pPair = document.getElementById('pPair');
+    function saveCards() { store.set('nlt_cards', cards); }
+    function renderCards() {
+        pCount.textContent = cards.length ? '(' + cards.length + ')' : '';
+        pList.innerHTML = '';
+        if (!cards.length) {
+            pList.appendChild(el('p', { class: 'muted small', text: 'No cards yet. Add your first one from the next write-up you read.' }));
+            return;
+        }
+        cards.slice().reverse().forEach((c) => {
+            const realIndex = cards.indexOf(c);
+            const wrap = el('div', { class: 'pattern' });
+            wrap.appendChild(el('h4', { text: c.name }));
+            wrap.appendChild(el('div', { class: 'meta', text: c.domain + (c.source ? ' · has source' : '') }));
+            if (c.context) wrap.appendChild(el('p', { text: c.context }));
+            if (c.elsewhere) wrap.appendChild(el('p', { html: '<strong>Applies to:</strong> ' + escapeHtml(c.elsewhere) }));
+            if (c.source) wrap.appendChild(el('p', {}, [el('a', { href: c.source, target: '_blank', rel: 'noopener', class: 'small', text: 'source ↗' })]));
+            const del = el('button', { class: 'btn', text: 'Delete' });
+            del.addEventListener('click', () => { cards.splice(realIndex, 1); saveCards(); renderCards(); });
+            wrap.appendChild(del);
+            pList.appendChild(wrap);
+        });
+    }
+    function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    document.getElementById('patternForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        cards.push({
+            name: document.getElementById('pName').value.trim(),
+            domain: document.getElementById('pDomain').value,
+            context: document.getElementById('pContext').value.trim(),
+            elsewhere: document.getElementById('pElse').value.trim(),
+            source: document.getElementById('pSource').value.trim()
+        });
+        saveCards(); renderCards(); e.target.reset();
+    });
+    document.getElementById('pRandom').addEventListener('click', () => {
+        pPair.innerHTML = '';
+        if (cards.length < 2) { pPair.appendChild(el('p', { class: 'muted small', text: 'Add at least two cards to pair them.' })); return; }
+        let i = Math.floor(Math.random() * cards.length), j = Math.floor(Math.random() * cards.length);
+        while (j === i) j = Math.floor(Math.random() * cards.length);
+        const box = el('div', { class: 'callout small' });
+        box.appendChild(el('p', { html: '<strong>' + escapeHtml(cards[i].name) + '</strong> &times; <strong>' + escapeHtml(cards[j].name) + '</strong>' }));
+        box.appendChild(el('p', { class: 'muted', text: 'What structure do these share? What would they produce combined?' }));
+        pPair.appendChild(box);
+    });
+    document.getElementById('pExport').addEventListener('click', () => {
+        if (!cards.length) return;
+        let md = '# Pattern library\n\n';
+        cards.forEach(c => {
+            md += '## ' + c.name + '\n- Domain: ' + c.domain + '\n';
+            if (c.context) md += '- Context: ' + c.context + '\n';
+            if (c.elsewhere) md += '- Applies to: ' + c.elsewhere + '\n';
+            if (c.source) md += '- Source: ' + c.source + '\n';
+            md += '\n';
+        });
+        const blob = new Blob([md], { type: 'text/markdown' });
+        const a = el('a', { href: URL.createObjectURL(blob), download: 'pattern-library.md' });
+        document.body.appendChild(a); a.click(); a.remove();
+    });
+    renderCards();
+
+    // ---------- Weekly checklist ----------
+    const weeklyItems = [
+        'Attempt 2 problems before reading their solutions',
+        'Add 3 cards to the pattern library',
+        'Link at least one new pair of cards (same structure)',
+        'Run one full 90-minute protocol on a real problem',
+        'Take 3 walk-breaks during hard problems this week',
+        'Read 2 write-ups or post-mortems in your main domain',
+        'Write one short note explaining why a solution worked'
+    ];
+    function weekKey() {
+        const d = new Date();
+        const onejan = new Date(d.getFullYear(), 0, 1);
+        const week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+        return d.getFullYear() + '-W' + week;
+    }
+    const wk = weekKey();
+    document.getElementById('weekLabel').textContent = '(' + wk + ')';
+    let weekState = store.get('nlt_week', {});
+    if (weekState.key !== wk) weekState = { key: wk, done: {} };
+    const weekly = document.getElementById('weekly');
+    weeklyItems.forEach((item, i) => {
+        const row = el('label', { class: 'check' });
+        const cb = el('input', { type: 'checkbox' });
+        cb.checked = !!weekState.done[i];
+        cb.addEventListener('change', () => { weekState.done[i] = cb.checked; store.set('nlt_week', weekState); });
+        row.appendChild(cb);
+        row.appendChild(el('span', { text: item }));
+        weekly.appendChild(row);
+    });
+})();
+</script>
 </body>
 </html>
